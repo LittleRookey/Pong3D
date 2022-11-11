@@ -1,5 +1,11 @@
 # Pong3D
- 
+## Basic Keys
+WASD Keys - Movement
+Left Mouse Click - Shoot Ball Ability
+R key - Restart Game when Game Ends
+ESC key - Exit game window
+
+
 First day Pong movement update
 - added Pong ball physics movement
 - added Player Movement
