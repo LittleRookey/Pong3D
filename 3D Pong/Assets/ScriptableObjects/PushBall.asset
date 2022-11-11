@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showLog: 0
   name: PushBall
-  coolDownTime: 5
-  activeTime: 0.1
-  description: 
-  key: 323
-  Instantaneous: 1
-  isUsingAbility: 0
+  _abilityType: 0
+  _coolDownTime: 8
+  _activeTime: 0.2
+  _description: Pushes the ball
+  _key: 323
+  _Instantaneous: 1
+  _isUsingAbility: 0
   pushForce: 20
   angle: 30

@@ -1,17 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
+/// <summary>
+/// Class for Pong ball Physics Movement
+/// </summary>
 public class PongBallMovement : MonoBehaviour
 {
-    [SerializeField] private float ballLaunchAngle; // launches the ball using random angle within this range
-    [SerializeField] private float moveSpeed;
+    /// <summary>
+    /// How much degrees the ball launch at the start of the game
+    /// </summary>
+    [SerializeField] 
+    private float ballLaunchAngle;
+    
+    /// <summary>
+    /// Ball's moveSpeed
+    /// </summary>
+    [SerializeField] 
+    private float moveSpeed;
+    
+    /// <summary>
+    /// Actual movement speed of the ball <see cref="">
+    /// </summary>
     private float actualMoveSpeed => Mathf.Clamp(moveSpeed, 10f, 100f);
+    private float originSpeed; // very basic speed when game starts
 
     GameObject playerGO; // player GameObject
     Rigidbody rb; // ball's rigidbody
-    Vector3 lastVelocity;
+    Vector3 lastVelocity; // last velocity of the ball
     Vector3 ballMoveDir; // ball launched direction
+
+    public UnityAction<Collision> OnBallCollisionEnter; // ball collision event
+    public UnityAction<Collision> OnBallCollisionExit;
 
     private void Awake()
     {
@@ -21,19 +42,29 @@ public class PongBallMovement : MonoBehaviour
 
     private void Start()
     {
-        InitiateBallLaunch();
+        originSpeed = actualMoveSpeed;
+        //InitiateBallLaunch();
     }
 
+    private void OnEnable()
+    {
+        GameController.Instance.OnGameRestart += ResetBallSpeed;    
+    }
 
+    private void OnDisable()
+    {
+        GameController.Instance.OnGameRestart -= ResetBallSpeed;
+    }
+
+    // Constantly updates the velocity of the ball
     private void Update()
     {
         lastVelocity = rb.velocity;
-        //rb.velocity = ballMoveDir * actualMoveSpeed;
     }
-    /*
-     * Initiates the ball on the other direction of player
-     * Randomly generates the 
-     */
+
+    /// <summary>
+    /// Throws the ball to the end of the ball in random direction
+    /// </summary>
     private void InitiateBallLaunch()
     {
         ballMoveDir = GetRandomForwardDirection(ballLaunchAngle, transform.forward);
@@ -41,23 +72,47 @@ public class PongBallMovement : MonoBehaviour
     }
 
     /// <summary>
-    /// callback event ran when ability starts
+    /// Gets the random forward direction from the given forward direction
     /// </summary>
     /// <param name="angle">range of angle that faces direction</param>
     /// <param name="forward">forward direction of the object</param>
-    /// /// <return>the forward random direction within the given angle</return>
+    /// <return>the forward random direction within the given angle</return>
     public static Vector3 GetRandomForwardDirection(float angle, Vector3 forward)
     {
-        float _angle = Random.Range(angle * -1, angle); // angle between -angle < x < angle
+        // angle between -angle < x < angle
+        float _angle = Random.Range(angle * -1, angle);
+
+        // axis to shoot the ball, X and Y axis 
+        Vector3 axis = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0f);
+        
         // Gets the random direction of the ball from the angle
-        Vector3 moveDir = Quaternion.AngleAxis(_angle, new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0f)) * forward;
-        return moveDir.normalized;
+        Vector3 moveDir = Quaternion.AngleAxis(_angle, axis) * forward;
+
+        // normalize the vector to get constant speed 
+        return moveDir.normalized; 
     }
 
-    // change initialDir to the norma
+    public void IncrementSpeed(float increaseValue)
+    {
+        moveSpeed += increaseValue;
+    }
+
+    private void ResetBallSpeed()
+    {
+        moveSpeed = originSpeed;
+    }
+    /// <summary>
+    /// change the direction of the ball based on the direction of the ball
+    /// </summary>
     private void OnCollisionEnter(Collision collision)
     {
         ballMoveDir = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
         rb.velocity = ballMoveDir * Mathf.Max(actualMoveSpeed, 0f);
+        OnBallCollisionEnter?.Invoke(collision);
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        OnBallCollisionExit?.Invoke(collision);
     }
 }

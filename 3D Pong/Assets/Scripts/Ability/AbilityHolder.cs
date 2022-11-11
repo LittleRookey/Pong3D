@@ -2,13 +2,21 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+
+
 public class AbilityHolder : MonoBehaviour
 {
-    public Ability ability;
-    [SerializeField] private Image abilityIcon;
-    float cooldownTime;
-    float activeTime;
-    bool isActive = false;
+    public Ability ability; // Ability Player will use
+    public bool isLocked = false; // locks the ability, but cooldown will run
+    [SerializeField] 
+    private Image abilityIcon; // Ability Icon for player
+    
+    float cooldownTime; // cooldown time of ability
+    
+    float activeTime; // active time of ability, how long should it run the code and start cooldown?
+    
+    bool isActive = false; // is ability active?
+
     enum AbilityState
     {
         ready, // when ability gets ready, no cooldown
@@ -41,11 +49,12 @@ public class AbilityHolder : MonoBehaviour
         switch (state)
         {
             case AbilityState.ready:
-                if (Input.GetKeyDown(ability.key) && !isActive)
+                if (isLocked) return;
+                if (Input.GetKeyDown(ability._key) && !isActive)
                 {
                     OnAbilityStart?.Invoke(gameObject);
                     state = AbilityState.active;
-                    activeTime = ability.activeTime;
+                    activeTime = ability._activeTime;
                     isActive = true;
 
                 }
@@ -55,7 +64,7 @@ public class AbilityHolder : MonoBehaviour
                 {
                     activeTime -= Time.deltaTime;
                     OnAbilityRunning?.Invoke(gameObject);
-                    if (Input.GetKeyUp(ability.key) && !ability.Instantaneous) // ends active time when key is unpressed and ability is not instantanous 
+                    if (Input.GetKeyUp(ability._key) && !ability._Instantaneous) // ends active time when key is unpressed and ability is not instantanous 
                     {
                         TurnSkillOff();
                     }
@@ -69,7 +78,8 @@ public class AbilityHolder : MonoBehaviour
                 if (cooldownTime > 0)
                 {
                     cooldownTime -= Time.deltaTime;
-                    abilityIcon.fillAmount = 1f - cooldownTime / ability.coolDownTime;
+                    if (abilityIcon != null)
+                        abilityIcon.fillAmount = 1f - cooldownTime / ability._coolDownTime;
                 }
                 else
                 {
@@ -79,13 +89,26 @@ public class AbilityHolder : MonoBehaviour
                 break;
         }
     }
+
+    public static AbilityHolder GetAbilityHolderOfType(GameObject target, eAbilityType abilityType)
+    {
+        AbilityHolder[] abilityHolders = target.GetComponents<AbilityHolder>();
+        foreach(AbilityHolder ab in abilityHolders)
+        {
+            if (ab.ability._abilityType == abilityType)
+            {
+                return ab;
+            }
+        }
+        return null;
+    }
     // Disactivate the skill and run cooldown and set active time to 0
     private void TurnSkillOff()
     {
         activeTime = 0f;
         isActive = false;
         state = AbilityState.cooldown;
-        cooldownTime = ability.coolDownTime;
+        cooldownTime = ability._coolDownTime;
         OnAbilityEnd?.Invoke(gameObject);
     }
 }

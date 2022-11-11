@@ -14,6 +14,8 @@ public class PushBall : Ability
     {
         base.OnAbilityStart(parent);
         ball = GameObject.FindGameObjectWithTag("Ball");
-        ball.GetComponent<Rigidbody>().AddForce(PongBallMovement.GetRandomForwardDirection(angle, ball.transform.forward) * pushForce, ForceMode.Impulse);
+        Rigidbody ballRB = ball.GetComponent<Rigidbody>();
+        ballRB.isKinematic = false;
+        ballRB.AddForce(PongBallMovement.GetRandomForwardDirection(angle, ball.transform.forward) * pushForce, ForceMode.Impulse);
     }
 }

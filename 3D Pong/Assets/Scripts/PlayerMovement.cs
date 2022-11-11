@@ -6,9 +6,10 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
 
+    public Vector3 playerMoveDir { get; private set; }
     float _x;
     float _y;
-
+    
     Rigidbody rb;
 
     private void Awake()
@@ -32,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _x = Input.GetAxisRaw("Horizontal");
         _y = Input.GetAxisRaw("Vertical");
-
-        rb.velocity = new Vector3(_x, _y, 0f) * moveSpeed ;
+        playerMoveDir = new Vector3(_x, _y, 0f);
+        rb.velocity = playerMoveDir * moveSpeed ;
     }
 }
