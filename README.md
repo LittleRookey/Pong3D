@@ -6,7 +6,7 @@ R key - Restart Game when Game Ends
 ESC key - Exit game window
 
 
-First day Pong movement update
+### First day Pong movement update
 - added Pong ball physics movement
 - added Player Movement
 - added player ability to push the ball with cooldown
@@ -17,7 +17,7 @@ First day Pong movement update
 
 ![pong play 2](gifs/pong_play2_11_09.gif) 
 
-Second day Pong update
+### Second day Pong update
 - added Restart, Game End state
 - added Score system and its UI
 - made material change effect on wall hit
@@ -41,4 +41,11 @@ Pong Game End/ Restart
 ![pongplay5](gifs/pong_play_11_10_5.gif)
 
 
+### Third day 
+- cleaned up code 
+- added exit game window 
+
+
+## Itch.io 
+[https://littlerookey.itch.io/pong-3d](https://littlerookey.itch.io/pong-3d)
 
