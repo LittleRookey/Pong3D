@@ -1035,6 +1035,7 @@ MonoBehaviour:
   incrementBallSpeed: 0.3
   scoreText: {fileID: 420731163}
   ballStartPos: {fileID: 704117018}
+  <Score>k__BackingField: 0
 --- !u!4 &228589174
 Transform:
   m_ObjectHideFlags: 0
