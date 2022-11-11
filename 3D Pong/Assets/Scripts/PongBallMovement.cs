@@ -8,22 +8,14 @@ using UnityEngine.Events;
 /// </summary>
 public class PongBallMovement : MonoBehaviour
 {
-    /// <summary>
-    /// How much degrees the ball launch at the start of the game
-    /// </summary>
     [SerializeField] 
-    private float ballLaunchAngle;
-    
-    /// <summary>
-    /// Ball's moveSpeed
-    /// </summary>
+    private float ballLaunchAngle; // How much degrees the ball launch at the start of the game
+
     [SerializeField] 
-    private float moveSpeed;
-    
-    /// <summary>
-    /// Speed used to move the ball 
-    /// </summary>
-    private float actualMoveSpeed => Mathf.Clamp(moveSpeed, 10f, 100f); 
+    private float moveSpeed; // Ball's moveSpeed
+
+
+    private float actualMoveSpeed => Mathf.Clamp(moveSpeed, 10f, 100f); // Speed used to move the ball 
     private float originSpeed; // start speed of the ball
 
     GameObject playerGO; // player GameObject
@@ -34,32 +26,38 @@ public class PongBallMovement : MonoBehaviour
     public UnityAction<Collision> OnBallCollisionEnter; // ball collision enter event
     public UnityAction<Collision> OnBallCollisionExit; // ball collision exit event
 
+
     private void Awake()
     {
         playerGO = GameObject.FindGameObjectWithTag("Player");
         rb = GetComponent<Rigidbody>();
     }
 
+
     private void Start()
     {
         originSpeed = actualMoveSpeed;
     }
+
 
     private void OnEnable()
     {
         GameController.Instance.OnGameRestart += ResetBallSpeed;    
     }
 
+
     private void OnDisable()
     {
         GameController.Instance.OnGameRestart -= ResetBallSpeed;
     }
+
 
     // Constantly updates the velocity of the ball
     private void Update()
     {
         lastVelocity = rb.velocity;
     }
+
 
     /// <summary>
     /// Throws the ball to the end of the ball in random direction
@@ -69,6 +67,7 @@ public class PongBallMovement : MonoBehaviour
         ballMoveDir = GetRandomForwardDirection(ballLaunchAngle, transform.forward);
         rb.velocity = ballMoveDir * actualMoveSpeed;   
     }
+
 
     /// <summary>
     /// Gets the random forward direction from the given forward direction
@@ -91,14 +90,16 @@ public class PongBallMovement : MonoBehaviour
         return moveDir.normalized; 
     }
 
+
     /// <summary>
     /// Increases the ball speed
-    /// <param name="increaseValue">Speed value to be increased</param>
     /// </summary>
+    /// <param name="increaseValue">Speed value to be increased</param>
     public void IncrementSpeed(float increaseValue)
     {
         moveSpeed += increaseValue;
     }
+
 
     // Resets the ball speed to original speed
     private void ResetBallSpeed()
