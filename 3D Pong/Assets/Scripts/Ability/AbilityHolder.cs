@@ -90,6 +90,12 @@ public class AbilityHolder : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns the Ability holder of the given ability type 
+    /// </summary>
+    /// <param name="target">the target GameObject AbilityHolder is attached to</param>
+    /// <param name="abilityType">the type of ability to be returned</param>
+    /// <returns> Returns the Ability holder that carries the given ability type </returns>
     public static AbilityHolder GetAbilityHolderOfType(GameObject target, eAbilityType abilityType)
     {
         AbilityHolder[] abilityHolders = target.GetComponents<AbilityHolder>();
@@ -102,7 +108,10 @@ public class AbilityHolder : MonoBehaviour
         }
         return null;
     }
-    // Disactivate the skill and run cooldown and set active time to 0
+
+    /// <summary>
+    /// Disactivate the skill and run cooldown and set active time to 0
+    /// </summary>
     private void TurnSkillOff()
     {
         activeTime = 0f;

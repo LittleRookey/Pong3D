@@ -28,12 +28,16 @@ public class AbilityManager : MonoBehaviour
         GameController.Instance.OnGameEnd -= OnEnd;
     }
 
+    // Locks Restart Ability
+    // Unlocks push Ability
     private void OnRestart()
     {
         restartHolder.isLocked = true;
         pushBallHolder.isLocked = false;
     }
 
+    // Unlocks Restart Ability
+    // Locks push Ability
     private void OnEnd()
     {
         restartHolder.isLocked = false;

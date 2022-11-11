@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private float moveSpeed; // movespeed of player
 
     public Vector3 playerMoveDir { get; private set; }
     float _x;
@@ -17,18 +17,14 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         DoMovement();
     }
 
+    /// <summary>
+    /// Does movement of player based on WASD key input and movespeed
+    /// </summary>
     private void DoMovement()
     {
         _x = Input.GetAxisRaw("Horizontal");

@@ -7,6 +7,7 @@ public class Restart : Ability
 {
     AbilityHolder abHolder;
 
+    // Restarts the Game
     public override void OnAbilityStart(GameObject parent)
     {
         base.OnAbilityStart(parent);
@@ -15,6 +16,7 @@ public class Restart : Ability
         
     }
 
+    // Locks the Restart Ability
     public override void OnAbilityEnd(GameObject parent)
     {
         base.OnAbilityEnd(parent);

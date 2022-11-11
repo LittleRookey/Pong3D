@@ -13,16 +13,18 @@ public class GameController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Transform ballStartPos;
     
-    PongBallMovement ballMovement;
+    // References
+    PongBallMovement ballMovement; 
     Rigidbody ballRB;
     WaitForSeconds waitSeconds;
 
+    // values to be used
     private string smoothnessInput = "_Glossiness";
     float originVal = 0.5f;
     float finalVal = 1f;
 
     
-    public int Score { get; private set; } // score of the game
+    [field:SerializeField ] public int Score { get; private set; } // score of the game
     private string scoreTemplate;
 
     private GameObject player;
@@ -73,7 +75,11 @@ public class GameController : MonoBehaviour
         AbilityHolder.GetAbilityHolderOfType(player, eAbilityType.Restart).isLocked = true;
         ballRB.isKinematic = true;
     }
-    // takes care of score 
+
+    /// <summary>
+    /// Handles Ball Score Event
+    /// </summary>
+    /// <param name="collision">Object ball collides with</param>
     private void OnBallScoreCollision(Collision collision)
     {
         if (collision.gameObject.CompareTag("End"))
@@ -84,6 +90,10 @@ public class GameController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles GameEnd Event 
+    /// </summary>
+    /// <param name="collision">Object ball collides with</param>
     private void OnBallGameEndCollision(Collision collision)
     {
         if (collision.gameObject.CompareTag("Front"))
@@ -92,10 +102,12 @@ public class GameController : MonoBehaviour
             // show red eye
             // show Restart Text
             OnGameEnd?.Invoke();
-            
         }
     }
 
+    /// <summary>
+    /// Restarts the Game by reset of scores and ball position
+    /// </summary>
     public void Restart()
     {
         OnGameRestart?.Invoke();
@@ -106,6 +118,10 @@ public class GameController : MonoBehaviour
         ballMovement.transform.position = ballStartPos.position;
     }
 
+    /// <summary>
+    /// Handles Ball Collision Enter Events On Wall, changing the material value
+    /// </summary>
+    /// <param name="collision">Object ball collides with</param>
     private void ChangeMaterialPropOnCollision(Collision collision)
     {
         MeshRenderer rend;
@@ -115,6 +131,10 @@ public class GameController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Handles Ball Collision Exit Events On Wall, changing the material value
+    /// </summary>
+    /// <param name="collision">Object ball collides with</param>
     private void SetMaterialOnCollisionExit(Collision collision)
     {
         MeshRenderer rend;
@@ -124,6 +144,9 @@ public class GameController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Coroutine to run smoothness back to normal
+    /// </summary>
     private IEnumerator StartChangeSmoothness(Renderer rend)
     {
         yield return waitSeconds;

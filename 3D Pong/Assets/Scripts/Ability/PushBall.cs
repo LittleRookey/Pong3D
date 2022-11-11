@@ -10,11 +10,13 @@ public class PushBall : Ability
     [SerializeField] private float angle = 30f;
     GameObject ball;
 
+    // Pushes the ball to forward direction 
     public override void OnAbilityStart(GameObject parent)
     {
         base.OnAbilityStart(parent);
         ball = GameObject.FindGameObjectWithTag("Ball");
         Rigidbody ballRB = ball.GetComponent<Rigidbody>();
+
         ballRB.isKinematic = false;
         ballRB.AddForce(PongBallMovement.GetRandomForwardDirection(angle, ball.transform.forward) * pushForce, ForceMode.Impulse);
     }

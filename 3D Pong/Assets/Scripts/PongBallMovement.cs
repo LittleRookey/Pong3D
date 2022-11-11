@@ -21,18 +21,18 @@ public class PongBallMovement : MonoBehaviour
     private float moveSpeed;
     
     /// <summary>
-    /// Actual movement speed of the ball <see cref="">
+    /// Speed used to move the ball 
     /// </summary>
-    private float actualMoveSpeed => Mathf.Clamp(moveSpeed, 10f, 100f);
-    private float originSpeed; // very basic speed when game starts
+    private float actualMoveSpeed => Mathf.Clamp(moveSpeed, 10f, 100f); 
+    private float originSpeed; // start speed of the ball
 
     GameObject playerGO; // player GameObject
     Rigidbody rb; // ball's rigidbody
     Vector3 lastVelocity; // last velocity of the ball
     Vector3 ballMoveDir; // ball launched direction
 
-    public UnityAction<Collision> OnBallCollisionEnter; // ball collision event
-    public UnityAction<Collision> OnBallCollisionExit;
+    public UnityAction<Collision> OnBallCollisionEnter; // ball collision enter event
+    public UnityAction<Collision> OnBallCollisionExit; // ball collision exit event
 
     private void Awake()
     {
@@ -43,7 +43,6 @@ public class PongBallMovement : MonoBehaviour
     private void Start()
     {
         originSpeed = actualMoveSpeed;
-        //InitiateBallLaunch();
     }
 
     private void OnEnable()
@@ -92,15 +91,21 @@ public class PongBallMovement : MonoBehaviour
         return moveDir.normalized; 
     }
 
+    /// <summary>
+    /// Increases the ball speed
+    /// <param name="increaseValue">Speed value to be increased</param>
+    /// </summary>
     public void IncrementSpeed(float increaseValue)
     {
         moveSpeed += increaseValue;
     }
 
+    // Resets the ball speed to original speed
     private void ResetBallSpeed()
     {
         moveSpeed = originSpeed;
     }
+
     /// <summary>
     /// change the direction of the ball based on the direction of the ball
     /// </summary>
