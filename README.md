@@ -19,14 +19,20 @@ Second day Pong update
 - fixed few physics movement of pong ball
 - added end state UI 
 
-Pong Preview 1
+Pong Play 1
 ![pongplay1](gifs/pong_play_11_10_1.gif)
 
-Pong Preview 2
+Pong Play 2
 ![pongplay2](gifs/pong_play_11_10_2.gif)
 
-Pong Preview 3
+Pong Play 3
 ![pongplay3](gifs/pong_play_11_10_3.gif)
 
-Pong Preview 4
+Pong Play 4
 ![pongplay4](gifs/pong_play_11_10_4.gif)
+
+Pong Game End/ Restart
+![pongplay5](gifs/pong_play_11_10_5.gif)
+
+
+
