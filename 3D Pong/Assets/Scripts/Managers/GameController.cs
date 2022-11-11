@@ -12,7 +12,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private float incrementBallSpeed = 1f; // amount of speed to increment on score
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Transform ballStartPos;
-    
+    [SerializeField] private Transform GameExitCanvas;
+
     // References
     PongBallMovement ballMovement; 
     Rigidbody ballRB;
@@ -74,8 +75,25 @@ public class GameController : MonoBehaviour
     {
         AbilityHolder.GetAbilityHolderOfType(player, eAbilityType.Restart).isLocked = true;
         ballRB.isKinematic = true;
+        GameExitCanvas.gameObject.SetActive(false);
     }
 
+    // Opens the Exit Game Window
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GameExitCanvas.gameObject.activeInHierarchy)
+            {
+                GameExitCanvas.gameObject.SetActive(false);
+                Time.timeScale = 1f;
+            } else
+            {
+                GameExitCanvas.gameObject.SetActive(true);
+                Time.timeScale = 0f;
+            }
+        }
+    }
     /// <summary>
     /// Handles Ball Score Event
     /// </summary>
@@ -153,4 +171,9 @@ public class GameController : MonoBehaviour
         rend.material.SetFloat(smoothnessInput, originVal);
     }
 
+    // Exits the game
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }
